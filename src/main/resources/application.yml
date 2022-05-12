@@ -4,12 +4,13 @@ server:
   error:
     whitelabel:
       enabled: true
+
+
+# DB
 spring:
   config:
     activate:
       on-profile:
-
-# DB
   datasource:
     url: jdbc:h2:tcp://localhost/~/shop
     username: sa

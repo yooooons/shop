@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+
+
+    <!--사용자 css추가-->
+<th:block layout:fragment="css">
+    <style>
+        .error {
+            color: #bd2130;
+        }
+    </style>
+</th:block>
+
+
+<th:block layout:fragment="content">
+    <main class="form-signin">
+        <form role="form" method="post" action="/members/login">
+
+            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+            <br>
+
+            <div class="form-floating">
+                <input type="email" name="email" class="form-control" placeholder="이메일을 입력해주세요">
+                <label th:for="email">Email address</label>
+            </div>
+            <br>
+
+            <div class="form-floating">
+                <input type="password" name="password" class="form-control" placeholder="비밀번호을 입력해주세요">
+                <label th:for="password">Password</label>
+            </div>
+            <br>
+
+            <p th:if="${loginErrorMsg}" class="error" th:text="${loginErrorMsg}"></p>
+
+            <button class="w-100 btn btn-lg btn-primary" >로그인</button>
+            <br><br>
+            <button class="w-100 btn btn-lg btn-primary" type="button" onclick="location.href='/members/new'">회원가입</button>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+        </form>
+    </main>
+</th:block>
+
+</html>
