@@ -11,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "member")
 @Getter
 @Builder
 @AllArgsConstructor
@@ -47,7 +46,7 @@ public class Member {
                 .email(memberFormDto.getEmail())
                 .address(memberFormDto.getAddress())
                 .password(password)
-                .role(Role.ADMIN)
+                .role(Role.USER)
                 .build();
         return member;
     }
