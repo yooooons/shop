@@ -35,11 +35,16 @@ public class Order {
     private OrderStatus orderStatus;
 
     @Builder.Default
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     private LocalDateTime regTime;
 
     private LocalDateTime updateTime;
+
+
+    public void changeMember(Member member) {
+        this.member = member;
+    }
 
 }
