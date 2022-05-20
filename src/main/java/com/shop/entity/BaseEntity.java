@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 public class BaseEntity extends BaseTimeEntity{
 
 
-
     @CreatedBy
     @Column(updatable = false)
     private String createBy;

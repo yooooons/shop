@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Builder
 @AllArgsConstructor
+@Builder
 public class Member extends BaseEntity{
-
-
+    public Member() {
+    }
 
     @Id
     @Column(name = "member_id")
@@ -33,11 +33,6 @@ public class Member extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    public Member() {
-
-    }
-
 
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) {
         String password = passwordEncoder.encode(memberFormDto.getPassword());

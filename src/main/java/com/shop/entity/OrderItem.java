@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-public class OrderItem {
+public class OrderItem extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "order_item_id")
@@ -28,10 +28,6 @@ public class OrderItem {
     private int orderPrice;
 
     private int count;
-
-    private LocalDateTime regTime;
-
-    private LocalDateTime updateTime;
 
     //연관관계 편의 메서드
     public void changeOrder(Order order) {
