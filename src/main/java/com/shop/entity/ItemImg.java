@@ -1,11 +1,13 @@
 package com.shop.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Builder
 public class ItemImg extends BaseEntity {
     @Id
     @GeneratedValue
@@ -22,6 +24,17 @@ public class ItemImg extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
+
+    public ItemImg() {
+
+    }
+
+    public void changeItem(Item item) {
+        this.item = item;
+    }
+    public void changRrepimgYn(String repimgYn) {
+        this.repimgYn = repimgYn;
+    }
 
     public void updateItemImg(String oriImgName, String imgName, String imgUrl) {
         this.oriImgName = oriImgName;
