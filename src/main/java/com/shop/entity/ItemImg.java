@@ -7,7 +7,6 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Builder
 public class ItemImg extends BaseEntity {
     @Id
     @GeneratedValue

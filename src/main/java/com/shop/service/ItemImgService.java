@@ -27,13 +27,13 @@ public class ItemImgService {
         String imgName = "";
         String imgUrl = "";
 
-        //파일 업로드
+        //파일 업로드(Server)
         if (!StringUtils.isBlank(oriImgName)) {
             fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
             imgUrl = "/images/item/" + imgName;
         }
 
-        //상품 이미지 정보 저장
+        //상품 이미지 정보 저장(DB)
         itemImg.updateItemImg(oriImgName, imgName, imgUrl);
         itemImgRepository.save(itemImg);
     }
