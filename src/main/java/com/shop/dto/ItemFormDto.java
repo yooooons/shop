@@ -5,6 +5,7 @@ import com.shop.entity.Item;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.config.Configuration;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -38,6 +39,9 @@ public class ItemFormDto {
     private static ModelMapper modelMapper = new ModelMapper();
 
     public Item createItem() {
+        modelMapper.getConfiguration()
+                .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE)
+                .setFieldMatchingEnabled(true);
         return modelMapper.map(this, Item.class);
     }
 
