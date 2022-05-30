@@ -19,7 +19,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +33,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @ActiveProfiles("test")
 class ItemServiceTest {
-
-
 
     @Autowired
     ItemService itemService;
@@ -66,7 +66,10 @@ class ItemServiceTest {
 
         List<MultipartFile> multipartFiles = createMultipartFiles();
         Long itemId = itemService.saveItem(itemFormDto, multipartFiles);
+
+
         List<ItemImg> itemImgList = itemImgRepository.findByItemIdOrderByIdAsc(itemId);
+
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -76,6 +79,8 @@ class ItemServiceTest {
         assertThat(itemFormDto.getPrice()).isEqualTo(item.getPrice());
         assertThat(itemFormDto.getStockNumber()).isEqualTo(item.getStockNumber());
         assertThat(multipartFiles.get(0).getOriginalFilename()).isEqualTo(itemImgList.get(0).getOriImgName());
+
+
 
     }
 

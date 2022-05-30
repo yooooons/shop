@@ -24,14 +24,14 @@ public class ItemService {
 
     public Long saveItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList) throws IOException {
         //상품등록
-//        Item item = itemFormDto.createItem();
-        Item item = Item.builder()
-                .itemNm(itemFormDto.getItemNm())
-                .itemDetail(itemFormDto.getItemDetail())
-                .itemSellStatus(itemFormDto.getItemSellStatus())
-                .price(itemFormDto.getPrice())
-                .stockNumber(itemFormDto.getStockNumber())
-                .build();
+        Item item = itemFormDto.createItem();
+//        Item item = Item.builder()
+//                .itemNm(itemFormDto.getItemNm())
+//                .itemDetail(itemFormDto.getItemDetail())
+//                .itemSellStatus(itemFormDto.getItemSellStatus())
+//                .price(itemFormDto.getPrice())
+//                .stockNumber(itemFormDto.getStockNumber())
+//                .build();
 
 
         itemRepository.save(item);
