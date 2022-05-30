@@ -29,16 +29,16 @@ public class ItemController {
     }
 
     @PostMapping("/admin/item/new")
-    public String itemNew(@Validated ItemFormDto itemFormDto, BindingResult bindingResult, Model model, @RequestParam List<MultipartFile> itemImfFileList) {
+    public String itemNew(@Validated ItemFormDto itemFormDto, BindingResult bindingResult, Model model, @RequestParam List<MultipartFile> itemImgFile) {
         if (bindingResult.hasErrors()) {
             return "item/itemForm";
         }
-        if (itemImfFileList.get(0).isEmpty() && itemFormDto.getId() == null) {
+        if (itemImgFile.get(0).isEmpty() && itemFormDto.getId() == null) {
             model.addAttribute("errorMessage", "상품이미지는 필수 입력 데이터 잆니다.");
             return "item/itemForm";
         }
         try{
-            itemService.saveItem(itemFormDto, itemImfFileList);
+            itemService.saveItem(itemFormDto, itemImgFile);
         } catch (IOException e) {
             model.addAttribute("errorMessage", "상품등록 도중에 에러가 발생하였습니다.");
             return "item/itemForm";
