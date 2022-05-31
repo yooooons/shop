@@ -3,15 +3,18 @@ package com.shop.controller;
 import com.shop.dto.ItemFormDto;
 import com.shop.service.ItemService;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -37,12 +40,27 @@ public class ItemController {
             model.addAttribute("errorMessage", "상품이미지는 필수 입력 데이터 잆니다.");
             return "item/itemForm";
         }
-        try{
+        try {
             itemService.saveItem(itemFormDto, itemImgFile);
         } catch (IOException e) {
             model.addAttribute("errorMessage", "상품등록 도중에 에러가 발생하였습니다.");
             return "item/itemForm";
         }
         return "redirect:/";
+    }
+
+
+    @GetMapping("/admin/item/{itemId}")
+    public String itemDto(@PathVariable Long itemId, Model model) {
+
+        try {
+            ItemFormDto itemFormDto = itemService.getItemDto(itemId);
+            model.addAttribute("itemFormDto", itemFormDto);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("errorMessage", "존재하지 않는 상품 입니다.");
+            model.addAttribute("itemFormDto", new ItemFormDto());
+            return "item/itemForm";
+        }
+        return "item/itemForm";
     }
 }
