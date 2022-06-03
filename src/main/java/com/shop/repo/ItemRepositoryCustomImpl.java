@@ -58,8 +58,8 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
         List<Item> content = queryFactory
                 .selectFrom(QItem.item)
-                .where(regDtsAfter(itemSearchDto.getSearchDataType()),
-                        searchSellStatusEq(itemSearchDto.getItemSellStatus()),
+                .where(regDtsAfter(itemSearchDto.getSearchDateType()),
+                        searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
                         searchByLike(itemSearchDto.getSearchBy(),
                                 itemSearchDto.getSearchQuery()))
                 .orderBy(QItem.item.id.desc())

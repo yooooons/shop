@@ -7,9 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ItemSearchDto {
-    private String searchDataType;
 
-    private ItemSellStatus itemSellStatus;
+    private String searchDateType;
+
+    private ItemSellStatus searchSellStatus;
 
     private String searchBy;
 
