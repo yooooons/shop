@@ -6,6 +6,7 @@ import com.shop.entity.Item;
 import com.shop.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class ItemController {
@@ -89,14 +91,16 @@ public class ItemController {
         return "redirect:/";
     }
 
+    //paging
     @GetMapping({"/admin/items", "/admin/items/{page}"})
     public String itemManage(@ModelAttribute ItemSearchDto itemSearchDto,
                             @PathVariable Optional<Integer> page, Model model) {
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
         Page<Item> items = itemService.getAdminItemPage(itemSearchDto, pageable);
+        log.info("items.getTotalPages()={},{}",items.getTotalPages(),items.getContent());
         model.addAttribute("items", items);
         model.addAttribute("itemSearchDto", itemSearchDto);
-        model.addAttribute("maxPage", 5);
+        model.addAttribute("maxPage", 3);
         return "item/itemMng";
 
     }
