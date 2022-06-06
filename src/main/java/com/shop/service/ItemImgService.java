@@ -31,7 +31,7 @@ public class ItemImgService {
         //파일 업로드(Server)
         if (!StringUtils.isBlank(oriImgName)) {
             imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
-            imgUrl = "/images/item/" + imgName;
+            imgUrl = "/img-dir/item/" + imgName;
         }
 
         //상품 이미지 정보 저장(DB)
@@ -51,7 +51,7 @@ public class ItemImgService {
             String oriImgName = itemImgFile.getOriginalFilename();
             String imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
             //DB내용, 엔티티 더티 체크를 이용하여 변경
-            String imgUrl = "/images/item/" + imgName;
+            String imgUrl = "/img-dir/item/" + imgName;
             savedItemImg.updateItemImg(oriImgName, imgName, imgUrl);
 
 
