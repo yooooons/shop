@@ -9,8 +9,8 @@ server:
     include-message: never
     include-stacktrace: never
     include-binding-errors: never
-itemImgLocation: d:/img-dir/item
-uploadPath: d:/img-dir/
+itemImgLocation: d:/shopimg/item
+uploadPath: file:///d:/shopimg/
 # DB
 spring:
   config:

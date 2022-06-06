@@ -37,7 +37,7 @@ public class ItemController {
     }
 
     @PostMapping("/admin/item/new")
-    public String itemNew(@Validated ItemFormDto itemFormDto, BindingResult bindingResult, Model model, @RequestParam List<MultipartFile> itemImgFile) {
+    public String itemNew(@Validated @ModelAttribute ItemFormDto itemFormDto, BindingResult bindingResult, Model model, @RequestParam List<MultipartFile> itemImgFile) {
         if (bindingResult.hasErrors()) {
             return "item/itemForm";
         }

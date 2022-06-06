@@ -27,11 +27,12 @@ public class ItemImgService {
         String oriImgName = itemImgFile.getOriginalFilename();
         String imgName = "";
         String imgUrl = "";
+        //물리적 디스크 위치가 아닌 img 불러오기 위한 url 주소 -> WebMvcConfig 확인
 
         //파일 업로드(Server)
         if (!StringUtils.isBlank(oriImgName)) {
             imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
-            imgUrl = "/img-dir/item/" + imgName;
+            imgUrl = "/images/item/" + imgName;
         }
 
         //상품 이미지 정보 저장(DB)
@@ -51,7 +52,7 @@ public class ItemImgService {
             String oriImgName = itemImgFile.getOriginalFilename();
             String imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
             //DB내용, 엔티티 더티 체크를 이용하여 변경
-            String imgUrl = "/img-dir/item/" + imgName;
+            String imgUrl = "/images/item/" + imgName;
             savedItemImg.updateItemImg(oriImgName, imgName, imgUrl);
 
 
