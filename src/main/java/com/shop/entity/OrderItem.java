@@ -51,6 +51,7 @@ public class OrderItem extends BaseEntity {
         orderItem.changeItemCountOrderPrice(item, count, item.getPrice());
         item.removeStock(count);
         return orderItem;
+        //orderItem을 반납하는 과정에서 item의 재고를 줄여줘야 되기에 item.removeStock(count)로직을 사용
     }
 
     public int getTotalPrice() {
