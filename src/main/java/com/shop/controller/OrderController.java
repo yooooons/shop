@@ -68,6 +68,13 @@ public class OrderController {
         model.addAttribute("page", pageable.getPageNumber());
         model.addAttribute("maxPage", 5);
 
+        List<OrderHistDto> content = orderHistDtoList.getContent();
+        for (OrderHistDto orderHistDto : content) {
+            List<OrderItemDto> orderItemDtoList = orderHistDto.getOrderItemDtoList();
+            for (OrderItemDto orderItemDto : orderItemDtoList) {
+                orderItemDto.getItemNm();
+            }
+        }
 
         return "order/orderHist";
 

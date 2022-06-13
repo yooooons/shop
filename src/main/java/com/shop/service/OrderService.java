@@ -9,6 +9,7 @@ import com.shop.repo.ItemRepository;
 import com.shop.repo.MemberRepository;
 import com.shop.repo.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class OrderService {
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
@@ -49,7 +51,9 @@ public class OrderService {
     @Transactional(readOnly = true)
     public Page<OrderHistDto> getOrderList(String email, Pageable pageable) {
         List<Order> orders = orderRepository.findOrders(email, pageable);
+
         Long totalCount = orderRepository.countOrder(email);
+
 
         List<OrderHistDto> orderHistDtos = new ArrayList<>();
 

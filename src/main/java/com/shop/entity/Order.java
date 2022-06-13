@@ -46,7 +46,6 @@ public class Order extends BaseEntity {
 
 
     public void addOrderItem(OrderItem orderItem) {
-        orderItems.add(orderItem);
         orderItem.changeOrder(this);
     }
 
@@ -57,7 +56,7 @@ public class Order extends BaseEntity {
                 .orderDate(LocalDateTime.now())
                 .build();
         for (OrderItem orderItem : orderItemList) {
-            order.getOrderItems().add(orderItem);
+            order.addOrderItem(orderItem);
         }
         return order;
     }
