@@ -68,4 +68,8 @@ public class Order extends BaseEntity {
         }
         return totalPrice;
     }
+
+    public void cancelOrder() {
+
+    }
 }
