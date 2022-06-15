@@ -23,4 +23,11 @@ public class Cart {
     public Cart() {
     }
 
+    public static Cart createCart(Member member) {
+        Cart cart = Cart.builder()
+                .member(member)
+                .build();
+        return cart;
+    }
+
 }

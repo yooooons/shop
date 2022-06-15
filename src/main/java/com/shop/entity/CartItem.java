@@ -24,7 +24,21 @@ public class CartItem {
     @JoinColumn(name = "item_id")
     private Item item;
 
+    private int count;
     public CartItem() {
 
+    }
+
+    public static CartItem createCartItem(Cart cart, Item item, int count) {
+        CartItem cartItem = CartItem.builder()
+                .cart(cart)
+                .item(item)
+                .count(count)
+                .build();
+        return cartItem;
+    }
+
+    public void addCount(int count) {
+        this.count += count;
     }
 }
