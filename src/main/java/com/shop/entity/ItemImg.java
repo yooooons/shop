@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Getter
 public class ItemImg extends BaseEntity {
     @Id
+    @Column(name="item_img_id")
     @GeneratedValue
     private Long id;
 

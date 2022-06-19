@@ -25,6 +25,7 @@ public class CartItem extends BaseEntity{
     private Item item;
 
     private int count;
+
     public CartItem() {
 
     }
