@@ -17,6 +17,9 @@ spring:
     activate:
       on-profile:
 
+  profiles:
+    include: oauth
+
   datasource:
     url: jdbc:h2:tcp://localhost/~/shop
     username: sa
@@ -34,6 +37,9 @@ spring:
 #        콘솔창에 출력되는 쿼리를 가독성이 좋게 포맷팅
         default_batch_fetch_size: 1000
     database-platform: org.hibernate.dialect.H2Dialect
+
+  session:
+    store-type: jdbc
 
   servlet:
     multipart:

@@ -31,6 +31,8 @@ public class Member extends BaseEntity{
 
     private String address;
 
+    private String picture;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -44,5 +46,16 @@ public class Member extends BaseEntity{
                 .role(Role.ADMIN)
                 .build();
         return member;
+    }
+
+    public Member updateMember(String name, String picture) {
+        this.name = name;
+        this.picture = picture;
+        return this;
+    }
+
+
+    public String getRoleKey() {
+        return this.role.getKey();
     }
 }

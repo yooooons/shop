@@ -21,6 +21,7 @@ import javax.persistence.EntityNotFoundException;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -35,7 +36,8 @@ public class OrderService {
     public Long saveOrder(OrderDto orderDto, String email) {
         Item item = itemRepository.findById(orderDto.getItemId())
                 .orElseThrow(EntityNotFoundException::new);
-        Member member = memberRepository.findByEmail(email);
+        Optional<Member> memberOptional = memberRepository.findByEmail(email);
+        Member member = memberOptional.orElseThrow(EntityNotFoundException::new);
 
         List<OrderItem> orderItemList = new ArrayList<>();
 
@@ -73,7 +75,8 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public boolean validateOrder(Long orderId, String email) {
-        Member curMember = memberRepository.findByEmail(email);
+        Optional<Member> curMemberOptional = memberRepository.findByEmail(email);
+        Member curMember = curMemberOptional.orElseThrow(EntityNotFoundException::new);
         Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
         Member savedMember = order.getMember();
         if (!StringUtils.equals(curMember.getEmail(), savedMember.getEmail())) {
@@ -89,7 +92,8 @@ public class OrderService {
 
 
     public Long orders(List<OrderDto> orderDtoList, String email) {
-        Member member = memberRepository.findByEmail(email);
+        Optional<Member> memberOptional = memberRepository.findByEmail(email);
+        Member member = memberOptional.orElseThrow(EntityNotFoundException::new);
         List<OrderItem> orderItemList = new ArrayList<>();
 
         for (OrderDto orderDto : orderDtoList) {

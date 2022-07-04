@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +35,8 @@ public class CartService {
 
     public Long addCart(CartItemDto cartItemDto, String email) {
         Item item = itemRepository.findById(cartItemDto.getItemId()).orElseThrow(EntityNotFoundException::new);
-        Member member = memberRepository.findByEmail(email);
+        Optional<Member> memberOptional = memberRepository.findByEmail(email);
+        Member member = memberOptional.orElseThrow(EntityNotFoundException::new);
 
         Cart cart = cartRepository.findByMemberId(member.getId());
         if (cart == null) {
@@ -60,7 +62,8 @@ public class CartService {
 
         List<CartDetailDto> cartDetailDtoList = new ArrayList<>();
 
-        Member member = memberRepository.findByEmail(email);
+        Optional<Member> memberOptional = memberRepository.findByEmail(email);
+        Member member = memberOptional.orElseThrow(EntityNotFoundException::new);
         Cart cart = cartRepository.findByMemberId(member.getId());
         if (cart == null) {
             return cartDetailDtoList;
@@ -74,7 +77,8 @@ public class CartService {
 
     @Transactional(readOnly = true)
     public boolean validateCartItem(Long cartItemId, String email) {
-        Member curMember = memberRepository.findByEmail(email);
+        Optional<Member> curMemberOptional = memberRepository.findByEmail(email);
+        Member curMember = curMemberOptional.orElseThrow(EntityNotFoundException::new);
         CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow(EntityNotFoundException::new);
         Member savedMember = cartItem.getCart().getMember();
         if (!StringUtils.equals(curMember.getEmail(), savedMember.getEmail())) {

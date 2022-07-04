@@ -1,5 +1,6 @@
 package com.shop.config;
 
+import com.shop.service.CustomOAuth2UserService;
 import com.shop.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final MemberService memberService;
-
+    private final CustomOAuth2UserService customOAuth2UserService;
 
 
     @Override
@@ -55,6 +56,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+
+        http
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService);
 
 
     }
