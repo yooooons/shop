@@ -1,9 +1,11 @@
 package com.shop.controller;
 
+import com.shop.config.argumentResolver.Login;
 import com.shop.dto.CartDetailDto;
 import com.shop.dto.CartItemDto;
 import com.shop.dto.CartOrderDto;
 import com.shop.service.CartService;
+import com.shop.session.SessionMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,7 @@ public class CartController {
 
     @PostMapping("/cart")
     @ResponseBody
-    public ResponseEntity order(@RequestBody @Validated CartItemDto cartItemDto, BindingResult bindingResult, Principal principal) {
+    public ResponseEntity order(@RequestBody @Validated CartItemDto cartItemDto, BindingResult bindingResult, Principal principal, @Login SessionMember sessionMember) {
         if (bindingResult.hasErrors()) {
             StringBuilder sb = new StringBuilder();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -34,7 +36,7 @@ public class CartController {
             }
             return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
         }
-        String email = principal.getName();
+        String email = sessionMember.getEmail();
         Long cartItemId;
 
         try {
@@ -46,19 +48,20 @@ public class CartController {
     }
 
     @GetMapping("/cart")
-    public String orderHist(Principal principal, Model model) {
-        List<CartDetailDto> cartDetailList = cartService.getCartList(principal.getName());
+    public String orderHist(Principal principal,@Login SessionMember sessionMember, Model model) {
+        List<CartDetailDto> cartDetailList = cartService.getCartList(sessionMember.getEmail());
         model.addAttribute("cartItems", cartDetailList);
         return "cart/cartList";
     }
 
     @PatchMapping("/cartItem/{cartItemId}")
     @ResponseBody
-    public ResponseEntity updateCartItem(@PathVariable Long cartItemId, int count, Principal principal) {
+    public ResponseEntity updateCartItem(@PathVariable Long cartItemId, int count, Principal principal, @Login SessionMember sessionMember) {
+
         if (count <= 0) {
             return new ResponseEntity<String>("최소 1개 이상 담아주세요", HttpStatus.BAD_REQUEST);
         } else if (!cartService.validateCartItem
-                (cartItemId, principal.getName())) {
+                (cartItemId, sessionMember.getEmail())) {
             return new ResponseEntity<String>("수정 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
         cartService.updateCartItemCount(cartItemId, count);
@@ -67,8 +70,9 @@ public class CartController {
 
     @DeleteMapping("/cartItem/{cartItemId}")
     @ResponseBody
-    public ResponseEntity deleteCartItem(@PathVariable Long cartItemId, Principal principal) {
-        if (!cartService.validateCartItem(cartItemId, principal.getName())) {
+    public ResponseEntity deleteCartItem(@PathVariable Long cartItemId, Principal principal, @Login SessionMember sessionMember) {
+
+        if (!cartService.validateCartItem(cartItemId, sessionMember.getEmail())) {
             return new ResponseEntity<String>("수정 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
         cartService.deleteCartItem(cartItemId);
@@ -77,7 +81,8 @@ public class CartController {
 
     @PostMapping("/cart/orders")
     @ResponseBody
-    public ResponseEntity orderCartItem(@RequestBody CartOrderDto cartOrderDto, Principal principal) {
+    public ResponseEntity orderCartItem(@RequestBody CartOrderDto cartOrderDto, Principal principal, @Login SessionMember sessionMember) {
+
         List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList();
 
         if (cartOrderDtoList == null || cartOrderDtoList.size() == 0) {
@@ -85,11 +90,11 @@ public class CartController {
         }
 
         for (CartOrderDto cartOrder : cartOrderDtoList) {
-            if (!cartService.validateCartItem(cartOrder.getCartItemId(), principal.getName())) {
+            if (!cartService.validateCartItem(cartOrder.getCartItemId(), sessionMember.getEmail())) {
                 return new ResponseEntity<String>("주문 권한이 없습니다.", HttpStatus.FORBIDDEN);
             }
         }
-        Long orderId = cartService.orderCartItem(cartOrderDtoList, principal.getName());
+        Long orderId = cartService.orderCartItem(cartOrderDtoList, sessionMember.getEmail());
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
 }

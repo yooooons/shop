@@ -1,9 +1,11 @@
 package com.shop.controller;
 
+import com.shop.config.argumentResolver.Login;
 import com.shop.dto.OrderDto;
 import com.shop.dto.OrderHistDto;
 import com.shop.dto.OrderItemDto;
 import com.shop.service.OrderService;
+import com.shop.session.SessionMember;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,7 +31,8 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/order")
-    public ResponseEntity order(@RequestBody @Validated OrderDto orderDto, BindingResult bindingResult, Principal principal) {
+    public ResponseEntity order(@RequestBody @Validated OrderDto orderDto, BindingResult bindingResult, Principal principal, @Login SessionMember sessionMember) {
+
         if (bindingResult.hasErrors()) {
             StringBuilder sb = new StringBuilder();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -39,7 +42,7 @@ public class OrderController {
             return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
         }
 
-        String email = principal.getName();
+        String email = sessionMember.getEmail();
         Long orderId;
 
         try {
@@ -53,12 +56,12 @@ public class OrderController {
     }
 
     @GetMapping({"/orders", "/orders/{page}"})
-    public String orderHist(@PathVariable Optional<Integer> page, Principal principal, Model model) {
+    public String orderHist(@PathVariable Optional<Integer> page, Principal principal, @Login SessionMember sessionMember, Model model) {
+
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 4);
 
 
-        Page<OrderHistDto> orderHistDtoList = orderService.getOrderList(principal.getName(), pageable);
-
+        Page<OrderHistDto> orderHistDtoList = orderService.getOrderList(sessionMember.getEmail(), pageable);
 
 
         model.addAttribute("orders", orderHistDtoList);
@@ -79,8 +82,9 @@ public class OrderController {
 
     @PostMapping("/order/{orderId}/cancel")
     @ResponseBody
-    public ResponseEntity cancelOrder(@PathVariable Long orderId, Principal principal) {
-        if (!orderService.validateOrder(orderId, principal.getName())) {
+    public ResponseEntity cancelOrder(@PathVariable Long orderId, Principal principal, @Login SessionMember sessionMember) {
+
+        if (!orderService.validateOrder(orderId, sessionMember.getEmail())) {
             return new ResponseEntity<String>("주문 취소 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
         orderService.cancelOrder(orderId);
