@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+
+<div layout:fragment="content">
+    <br/>
+    <div id="posts_list">
+        <div class="col-md-12">
+            <form class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <label for="id" th:text="${posts.id}">번호 : 0</label>
+                    <input type="hidden" id="id" th:value="${posts.id}">
+                    <label  th:text="${posts.regTime}">작성날짜</label>
+                </div>
+                <div class="card-header d-flex justify-content-between">
+                    <label  th:text="${posts.writer}">작성자 : 작성자 이름</label>
+                    <label  th:text="${posts.view}"><i class=" bi bi-eye-fill"> 조회수0</i></label>
+                </div>
+                <div class="card-body">
+                    <label for="title">제목</label>
+                    <input type="text" class="form-control" id="title" th:value="${posts.title}" readonly>
+                    <br/>
+                    <label for="content">내용</label>
+                    <textarea rows="5" class="form-control" id="content" th:text="${posts.contents}" readonly>글 내용</textarea>
+                </div>
+            </form>
+
+
+
+            <th:block th:if="${member!=null}">
+                <a href="/" role="button" class="btn btn-info bi bi-arrow-return-left"> 목록</a>
+                <th:block th:if="${writer}">
+                    <a th:href="@{'/posts/update/'+${posts.id}}" role="button"
+                       class="btn btn-primary bi bi-pencil-square"> 수정</a>
+                    <button type="button" onclick="" id="btn-delete" class="btn btn-danger bi bi-trash"> 삭제</button>
+                </th:block>
+            </th:block>
+
+            <th:block th:if="${member==null}">
+                <a href="/" role="button" class="btn btn-info bi bi-arrow-return-left"> 목록</a>
+            </th:block>
+
+
+            <div th:replace="comments/list::commentsList"></div>
+            <div th:replace="comments/form::commentsForm"></div>
+
+        </div>
+    </div>
+</div>
+</html>

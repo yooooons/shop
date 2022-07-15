@@ -45,7 +45,9 @@ spring:
     multipart:
       max-file-size: 20MB
       max-request-size: 100MB
-
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 logging:
   level:
     org.hibernate.SQL: debug

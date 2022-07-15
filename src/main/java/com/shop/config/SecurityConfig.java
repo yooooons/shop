@@ -32,7 +32,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          * .loginPage("로그인 페이지 경로")  -> 앞으로 로그인은 이 경로에서 수행하게 된다는 뜻이다.
          * .loginProcessingUrl("로그인 처리 경로") -> 로그인 form 의 action 과 일치시켜주어야 한다.
          */
-        http.formLogin()
+        http
+                .csrf().ignoringAntMatchers("/api/**") /* REST API 사용 예외처리 */
+                .and()
+                .formLogin()
                 /**
                  * loginPage를 사용하면 loginProcessingUrl 가 null일 경우에 loginPage의 파라미터로 변경시킨다
                  * ex)
@@ -49,8 +52,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/");
 
         http.authorizeRequests()
-                .mvcMatchers("/", "/members/**",
-                        "/item/**", "/images/**").permitAll()
+                .mvcMatchers("/posts/write/**").authenticated()
+                .mvcMatchers("/", "/members/**","/error/**","/posts/**",
+                        "/item/**", "/images/**", "/posts/read/**").permitAll()
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
 
