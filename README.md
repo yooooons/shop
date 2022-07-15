@@ -5,6 +5,7 @@
 
 ERD 다이어그램
 ==============
-![image](https://user-images.githubusercontent.com/96519249/174537478-4291bef1-8ceb-45fb-af1a-c6a641d8d77b.png)
+![erd](https://user-images.githubusercontent.com/96519249/179228534-c1131e26-1d70-4552-8225-4613c4951f3c.png)
+
 
 
