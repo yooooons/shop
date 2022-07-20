@@ -38,7 +38,9 @@ Shoping Mall 프로젝트
 * SpringBoot Security  
 * Spring Data JPA    
 * Qdsl  
-* OAuth2.0  
+* OAuth2.0 
+* JUnit5 
+
 
 #### Build tool
 * Gradle   
@@ -52,9 +54,9 @@ Shoping Mall 프로젝트
 * Thymeleaf  
 * Bootstrap 5    
 
-#### 프론트엔드
+#### 기타 주요 라이브러리
 * Lombok
-* devtools 
+* Devtools 
 
 
 ---
